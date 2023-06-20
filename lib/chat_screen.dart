@@ -77,11 +77,11 @@ class _ChatScreenState extends State<ChatScreen> {
       )
     );
 
-    _text.clear();
+    chatRooms[widget.index].lastMessage = _text.text;
+    chatRooms[widget.index].modifiedAt = DateTime.now().microsecondsSinceEpoch;
+    chatRooms[widget.index].lastSender = "You";
 
-    chatRoomData.lastMessage = _text.text;
-    chatRoomData.lastSender = "You";
-    chatRoomData.modifiedAt = DateTime.now().microsecondsSinceEpoch;
+    _text.clear();
 
     scrollToBottom();
 
@@ -102,7 +102,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
     chatRooms[widget.index].lastMessage = "Message Recieved. \n This is my reply";
     chatRooms[widget.index].modifiedAt = DateTime.now().microsecondsSinceEpoch;
-    chatRoomData.lastSender = chatRoomData.members[0];
+    chatRooms[widget.index].lastSender = chatRoomData.members[0];
 
     scrollToBottom();
 

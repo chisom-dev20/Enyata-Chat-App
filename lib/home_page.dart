@@ -55,7 +55,7 @@ class _HomePageState extends State<HomePage> {
          
       var res = json.decode(response.body);
 
-      rooms = res['data']; 
+      List rooms = res['data']; 
 
       for(int i = 0; i<rooms.length; i++){
 
@@ -167,7 +167,7 @@ Future<List<ChatMessage>> fetchChats(int chatId) async{
 
   _HomePageState() {
 
-    searchController.addListener(() {
+   searchController.addListener(() {
     setState(() {
       if (searchController.text.isEmpty) {
           _isSearching = false;
@@ -259,25 +259,30 @@ Future<List<ChatMessage>> fetchChats(int chatId) async{
               spacer(15),
       
               Expanded(
-                child: SingleChildScrollView(
-                  physics: AlwaysScrollableScrollPhysics(),
-                  child: chatRooms.isEmpty?
-                    Padding(
-                      padding: const EdgeInsets.only(top: 80.0),
-                      child: Center(child: CircularProgressIndicator(),),
-                    )
-                    :
-                    _isSearching?
-                    
-                    searchresult.isEmpty?
-                     Padding(
-                      padding: const EdgeInsets.only(top: 80.0),
-                      child: Center(child: Text('No results found', style: ptstyle(size: 15, weight: 500, color: grey),)),
-                    )
-                    :
-                  showGroups(searchresult)
-                    :
-                   showGroups(chatRooms),
+                child: RefreshIndicator(
+                  onRefresh: () async{
+                    setState(() { });
+                  },
+                  child: SingleChildScrollView(
+                    physics: AlwaysScrollableScrollPhysics(),
+                    child: chatRooms.isEmpty?
+                      Padding(
+                        padding: const EdgeInsets.only(top: 80.0),
+                        child: Center(child: CircularProgressIndicator(),),
+                      )
+                      :
+                      _isSearching?
+                      
+                      searchresult.isEmpty?
+                       Padding(
+                        padding: const EdgeInsets.only(top: 80.0),
+                        child: Center(child: Text('No results found', style: ptstyle(size: 15, weight: 500, color: grey),)),
+                      )
+                      :
+                    showGroups(searchresult)
+                      :
+                     showGroups(chatRooms),
+                  ),
                 ),
               )
         
@@ -308,6 +313,7 @@ Future<List<ChatMessage>> fetchChats(int chatId) async{
     return InkWell(
       onTap: () async{
         await customNavigation(context, ChatScreen(data: data, index: index,));
+        setState(() { });
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12.0),
